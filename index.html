@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do - App</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+        box-sizing: border-box;
+      }
+      h1 {
+        text-align: center;
+      }
+      .box1 {
+        margin: auto;
+        margin-top: 30px;
+        font-size: 1.5rem;
+        width: 400px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      #description {
+        margin-bottom: 5px;
+      }
+      input {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid black;
+      }
+      button {
+        padding: 5px;
+        font-weight: 700;
+        background-color: greenyellow;
+        border-radius: 10px;
+        border: 1px solid black;
+        font-size: 1.5rem;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+      }
+      .delete {
+        padding: 5px;
+        font-weight: 700;
+        background-color: red;
+        border-radius: 10px;
+        border: 1px solid black;
+        font-size: 1.5rem;
+      }
+      #box2 {
+        width: 400px;
+        height: 400px;
+        margin: auto;
+        margin-top: 15px;
+      }
+      .task {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        border: 1px solid black;
+        padding: 5px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <script>
+    function deletedone() {
+      console.log("task deleted successfully")
+      var parentelement= document.getElementById("box2");
+      parentelement.innerHTML = "";
+      gettask();
+    }
+    function deletetodo(id) {
+      
+      fetch("http://localhost:3000/todos/" + id, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(deletedone);
+    }
+    function addtask() {
+      var title_value = document.getElementById("title").value;
+      var description_value = document.getElementById("description").value;
+      fetch("http://localhost:3000/todos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: title_value,
+          description: description_value,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          var parentelement = document.getElementById("box2");
+          var childelement = document.getElementsByClassName("task");
+          parentelement.innerHTML="";
+         gettask();
+        });
+    }
+
+    function gettask() {
+  fetch("http://localhost:3000/todos", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      var no_task = data.length;
+      if(no_task == 0|| no_task == 1||no_task==2||no_task==3){
+        alert("there are very less record to show on the screen ")
+      }
+
+      else{
+      var startIdx = Math.max(no_task - 3, 0); 
+      for (let i = startIdx; i < no_task; i++) {
+        var parentelement = document.getElementById("box2");
+        var childelement = document.createElement("div");
+        childelement.setAttribute("class", "task");
+        var grandchild1 = document.createElement("h3");
+        grandchild1.innerHTML = data[i].title;
+        var grandchild2 = document.createElement("p");
+        grandchild2.innerHTML = data[i].description;
+        var grandchild3 = document.createElement("button");
+        grandchild3.setAttribute("class", "delete");
+        grandchild3.setAttribute("onclick", "deletetodo("+data[i].id+")");
+        grandchild3.innerHTML = "Delete";
+        childelement.appendChild(grandchild1);
+        childelement.appendChild(grandchild2);
+        childelement.appendChild(grandchild3);
+        parentelement.appendChild(childelement);
+      }
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching tasks:", error);
+    });
+}
+
+  </script>
+  <body onload="gettask()">
+    <h1>Todo - App</h1>
+    <div class="box1">
+      <label for="title">Title of task</label>
+      <input type="text" id="title" />
+      <label for="title">Description of task</label>
+      <input type="text" id="description" />
+      <button id="addtask" onclick="addtask()">Add Task</button>
+    </div>
+    <div id="box2">
+     
+      </div>
+    </div>
+  </body>
+</html>
