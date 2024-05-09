@@ -6,6 +6,16 @@ const path = require("path");
 const fs = require("fs");
 const { title } = require("process");
 const cors = require("cors");
+const mongoose = require('mongoose')
+
+
+const todoschema = new Schema({
+  id:Number,
+  title:String,
+  description:String
+});
+
+const Todo = mongoose.model("todo",todoschema);
 
 app.use(bodyparser.json());
 app.use(cors());
