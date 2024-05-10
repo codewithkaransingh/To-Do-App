@@ -16,7 +16,7 @@ const Todo = mongoose.model("todo", todoschema);
 
 app.use(bodyparser.json());
 app.use(cors());
-
+//adding tasks
 app.get("/todos", async (req, res) => {
   const tasks = await Todo.find({});
   res.json(tasks);
