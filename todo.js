@@ -16,12 +16,12 @@ const Todo = mongoose.model("todo", todoschema);
 
 app.use(bodyparser.json());
 app.use(cors());
-//adding tasks
+//getting tasks
 app.get("/todos", async (req, res) => {
   const tasks = await Todo.find({});
   res.json(tasks);
 });
-
+//adding tasks
 app.post("/todos", async (req, res) => {
   let content = {
     title: req.body.title,
@@ -32,7 +32,7 @@ app.post("/todos", async (req, res) => {
   newtodo.save();
   res.status(201).json(newtodo);
 });
-
+//deleting tasks 
 app.delete("/todos/:id", async (req, res) => {
  
   const id = req.params.id;
