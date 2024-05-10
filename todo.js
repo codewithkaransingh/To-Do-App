@@ -28,34 +28,14 @@ app.post("/todos", async (req, res) => {
     title: req.body.title,
     description: req.body.description,
   };
-  // todo.push(content);
-  // fs.writeFile("database.js", JSON.stringify(todo), (err) => {
-  //   res.status(201).json(content);
-  // });
+  
   const newtodo = await Todo(content);
   newtodo.save();
   res.status(201).json(newtodo);
 });
 
 app.delete("/todos/:id", async (req, res) => {
-  // fs.readFile("database.js", "utf-8", (err, data) => {
-  //   todo = JSON.parse(data);
-  //   for (let i = 0; i < todo.length; i++) {
-  //     if (req.params.id == todo[i].id) {
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-  //   if (index >= 0) {
-  //     todo.splice(index, 1);
-  //     var write = JSON.stringify(todo);
-  //     fs.writeFile("database.js", write, (err) => {
-  //       res.status(200).send("Item found and deleted");
-  //     });
-  //   } else {
-  //     res.status(404).send("item not found");
-  //   }
-  // });
+ 
   const id = req.params.id;
 
   const findtodo = await Todo.findOne({ _id: id });
