@@ -83,7 +83,9 @@
           "Content-Type": "application/json",
         },
       }).then(deletedone);
+      
     }
+ 
     function addtask() {
       var title_value = document.getElementById("title").value;
       var description_value = document.getElementById("description").value;
@@ -120,7 +122,8 @@
     })
     .then((data) => {
       var no_task = data.length;
-      if(no_task == 0|| no_task == 1||no_task==2||no_task==3){
+      
+      if(no_task <3){
         alert("there are very less record to show on the screen ")
       }
 
@@ -136,7 +139,9 @@
         grandchild2.innerHTML = data[i].description;
         var grandchild3 = document.createElement("button");
         grandchild3.setAttribute("class", "delete");
-        grandchild3.setAttribute("onclick", "deletetodo("+data[i].id+")");
+        grandchild3.setAttribute("onclick", "deletetodo('"+data[i]._id+"')");
+        // console.log(data[i]._id);
+       
         grandchild3.innerHTML = "Delete";
         childelement.appendChild(grandchild1);
         childelement.appendChild(grandchild2);
@@ -155,9 +160,9 @@
     <h1>Todo - App</h1>
     <div class="box1">
       <label for="title">Title of task</label>
-      <input type="text" id="title" />
+      <input type="text" id="title" required />
       <label for="title">Description of task</label>
-      <input type="text" id="description" />
+      <input type="text" id="description" required />
       <button id="addtask" onclick="addtask()">Add Task</button>
     </div>
     <div id="box2">
