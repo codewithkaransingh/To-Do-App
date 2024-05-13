@@ -6,7 +6,11 @@ const port = 3000;
 const { title } = require("process");
 const cors = require("cors");
 const mongoose = require("mongoose");
-mongoose.connect("Your Mongodb link");
+
+
+
+
+
 const todoschema = new mongoose.Schema({
   title: String,
   description: String,
@@ -14,6 +18,7 @@ const todoschema = new mongoose.Schema({
 
 const Todo = mongoose.model("todo", todoschema);
 
+// mongoose.connect("your mongodb database link")
 app.use(bodyparser.json());
 app.use(cors());
 //getting tasks
@@ -27,14 +32,14 @@ app.post("/todos", async (req, res) => {
     title: req.body.title,
     description: req.body.description,
   };
-  
+
   const newtodo = await Todo(content);
   newtodo.save();
   res.status(201).json(newtodo);
 });
 //deleting tasks 
 app.delete("/todos/:id", async (req, res) => {
- 
+
   const id = req.params.id;
 
   const findtodo = await Todo.findOne({ _id: id });
